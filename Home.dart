@@ -7,14 +7,33 @@ class HomePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
+          ClipOval(
+            child: Image.asset(
             'assets/images/home.png',  
-            width: 200,                
-            height: 200,               
+            width: 150,                
+            height: 150, 
+            fit: BoxFit.cover,
+          ),             
+        ),
+          SizedBox(height: 30),
+
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              'Home Page',
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-          SizedBox(height: 20),
           Text(
-            'Home Page',
+            'Home',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ],
