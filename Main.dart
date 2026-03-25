@@ -38,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).pop(); // closes drawer automatically
+    Navigator.of(context).pop(); 
   }
 
   @override
@@ -55,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
               decoration: BoxDecoration(color: Colors.blue),
               child: Text(
                 'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                style: TextStyle(color: Colors.black, fontSize: 24),
               ),
             ),
             ListTile(
@@ -84,14 +84,17 @@ class _MainScreenState extends State<MainScreen> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+          onTap: _onItemTapped,
+            backgroundColor: Colors.red,        
+            selectedItemColor: Colors.blue,      
+            unselectedItemColor:Colors.blue,  
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-        ],
-      ),
+  ],
+),
     );
   }
 }
