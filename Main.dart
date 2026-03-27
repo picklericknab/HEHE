@@ -38,7 +38,6 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _selectedIndex = index;
     });
-    Navigator.of(context).pop(); 
   }
 
   @override
@@ -61,22 +60,34 @@ class _MainScreenState extends State<MainScreen> {
             ListTile(
               leading: Icon(Icons.home),
               title: Text('Home'),
-              onTap: () => _onItemTapped(0),
+              onTap: () {
+                _onItemTapped(0);
+                Navigator.of(context).pop(); // <-- added here
+              },
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Profile'),
-              onTap: () => _onItemTapped(1),
+              onTap: () {
+                _onItemTapped(1);
+                Navigator.of(context).pop(); // <-- added here
+              },
             ),
             ListTile(
               leading: Icon(Icons.message),
               title: Text('Message'),
-              onTap: () => _onItemTapped(2),
+              onTap: () {
+                _onItemTapped(2);
+                Navigator.of(context).pop(); // <-- added here
+              },
             ),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Settings'),
-              onTap: () => _onItemTapped(3),
+              onTap: () {
+                _onItemTapped(3);
+                Navigator.of(context).pop(); // <-- added here
+              },
             ),
           ],
         ),
@@ -84,17 +95,17 @@ class _MainScreenState extends State<MainScreen> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-            backgroundColor: Colors.red,        
-            selectedItemColor: Colors.blue,      
-            unselectedItemColor:Colors.blue,  
+        onTap: _onItemTapped,
+        backgroundColor: Colors.red,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.blue,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-  ],
-),
+        ],
+      ),
     );
   }
 }
