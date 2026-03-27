@@ -1,0 +1,301 @@
+Main.dart:
+import 'package:flutter/material.dart';
+import 'pages/home.dart';
+import 'pages/profile.dart';
+import 'pages/message.dart';
+import 'pages/settings.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'AppsDev2B Mobile App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: MainScreen(),
+    );
+  }
+}
+
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    HomePage(),
+    ProfilePage(),
+    MessagePage(),
+    SettingsPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Route _createRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: SlideTransition(
+            position: Tween(begin: Offset(1, 0), end: Offset.zero)
+                .animate(animation),
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
+  void _navigateTo(int index) {
+    Navigator.of(context).push(_createRoute(_pages[index]));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('AppsDev2B Mobile App'),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.black, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () => _navigateTo(0),
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Profile'),
+              onTap: () => _navigateTo(1),
+            ),
+            ListTile(
+              leading: Icon(Icons.message),
+              title: Text('Message'),
+              onTap: () => _navigateTo(2),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () => _navigateTo(3),
+            ),
+          ],
+        ),
+      ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        backgroundColor: Colors.red,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.blue,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+      ),
+    );
+  }
+}
+
+Home.dart:
+import 'package:flutter/material.dart';
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool _expanded = false;
+  double _opacity = 1.0;
+
+  void _animate() {
+    setState(() {
+      _expanded = !_expanded;
+      _opacity = _opacity == 1 ? 0 : 1;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 4, 188, 235),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Hero(
+              tag: 'heroImage',
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => HeroPage()),
+                  );
+                },
+                child: Image.asset('assests/images/homee.png', width: 150),
+              ),
+            ),
+            SizedBox(height: 20),
+
+            // Animated Container
+            AnimatedContainer(
+              duration: Duration(seconds: 1),
+              width: _expanded ? 200 : 100,
+              height: _expanded ? 200 : 100,
+              color: Colors.blue,
+              alignment: Alignment.center,
+              child: Text("Tap"),
+            ),
+
+            SizedBox(height: 20),
+
+            // Fade Animation
+            AnimatedOpacity(
+              duration: Duration(seconds: 1),
+              opacity: _opacity,
+              child: Text("Fading Text"),
+            ),
+
+            ElevatedButton(
+              onPressed: _animate,
+              child: Text("Animate"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HeroPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Hero')),
+      body: Center(
+        child: Hero(
+          tag: 'heroImage',
+          child: Image.asset('assests/images/homee.png', width: 300),
+        ),
+      ),
+    );
+  }
+}
+
+Profile.dart:
+import 'package:flutter/material.dart';
+
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _imgAnim;
+  late Animation<double> _textAnim;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 2));
+
+    _imgAnim = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Interval(0.0, 0.5)),
+    );
+
+    _textAnim = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Interval(0.5, 1.0)),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 4, 188, 235),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FadeTransition(
+              opacity: _imgAnim,
+              child: Image.asset('assests/images/profile.png', width: 150),
+            ),
+            SizedBox(height: 20),
+            FadeTransition(
+              opacity: _textAnim,
+              child: Text(
+                'Profile Page',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Message.dart:
+import 'package:flutter/material.dart';
+
+class MessagePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 4, 188, 235),
+      body: Center(
+        child: Text(
+          'Message Page',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
+
+Settings.dart:
+import 'package:flutter/material.dart';
+
+class SettingsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 4, 188, 235),
+      body: Center(
+        child: Text(
+          'Settings Page',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
