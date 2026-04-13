@@ -1,0 +1,27 @@
+import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // Initial elements
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(40);
+        list.add(20);
+        list.add(30);
+        list.add(50);
+        list.add(5);
+
+        System.out.println("Original List: " + list);
+
+        // Insert element
+        int insertElement = 10;
+        list.add(insertElement);
+
+        System.out.println("After Insertion: " + list);
+
+        // Delete element (last element)
+        list.remove(list.size() - 1);
+
+        System.out.println("After Deletion: " + list);
+    }
+}
