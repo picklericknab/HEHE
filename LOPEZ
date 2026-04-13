@@ -1,0 +1,93 @@
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node left, right;
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+public class BinaryTree {
+    Node root;
+
+    Node insert(Node node, int data) {
+        if (node == null) {
+            node = new Node(data);
+            return node;
+        }
+        if (data < node.data)
+            node.left = insert(node.left, data);
+        else if (data > node.data)
+            node.right = insert(node.right, data);
+        return node;
+    }
+
+    Node deleteNode(Node root, int key) {
+        if (root == null) return root;
+
+        if (key < root.data)
+            root.left = deleteNode(root.left, key);
+        else if (key > root.data)
+            root.right = deleteNode(root.right, key);
+        else {
+            if (root.left == null)
+                return root.right;
+            else if (root.right == null)
+                return root.right;
+
+            root.data = minValue(root.right);
+            root.right = deleteNode(root.right, root.data);
+        }
+        return root;
+    }
+
+    int minValue(Node node) {
+        int minv = node.data;
+        while (node.left != null) {
+            minv = node.left.data;
+            node = node.left;
+        }
+        return minv;
+    }
+
+    void preorder(Node root) {
+        if (root != null) {
+            System.out.print(root.data + " ");
+            preorder(root.left);
+            preorder(root.right);
+        }
+    }
+
+    public static void main(String args[]) {
+        BinaryTree tree = new BinaryTree();
+        Scanner sc = new Scanner(System.in);
+
+        // Initial Input
+        System.out.print("Enter element: ");
+        String[] initial = sc.nextLine().split(", ");
+        for (String s : initial) {
+            int val = Integer.parseInt(s);
+            tree.root = tree.insert(tree.root, val);
+        }
+
+        // Insert
+        System.out.print("Insert an element: ");
+        int insertVal = sc.nextInt();
+        tree.root = tree.insert(tree.root, insertVal);
+        System.out.print("After insertion: ");
+        tree.preorder(tree.root);
+        System.out.println();
+
+        // Delete
+        System.out.print("Delete an element: ");
+        int deleteVal = sc.nextInt();
+        tree.root = tree.deleteNode(tree.root, deleteVal);
+        System.out.print("After Deletion: ");
+        tree.preorder(tree.root);
+        System.out.println();
+        
+        sc.close();
+    }
+}
