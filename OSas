@@ -1,78 +1,94 @@
-package act3;
+package act;
 import java.util.*;
-public class SampleOutput {
-	
-	    public static int binarySearch(int[] arr, int size, int key) {
-	        int left = 0, right = size - 1;
 
-	        while (left <= right) {
-	            int mid = (left + right) / 2;
-
-	            if (arr[mid] == key)
-	                return mid;
-	            else if (arr[mid] < key)
-	                left = mid + 1;
-	            else
-	                right = mid - 1;
-	        }
-	        return left;
-	    }
-
-	    public static void main(String[] args) {
-	        Scanner sc = new Scanner(System.in);
-
-	        int[] arr = {5, 20, 30, 40, 50}; 
-	        int n = arr.length;
-
-	        System.out.print("Enter elements: ");
-	        for (int i = 0; i < n; i++) {
-	            System.out.print(arr[i] + " ");
-	        }
-
-	        System.out.print("\nInsert an element: ");
-	        int insert = sc.nextInt();
-
-	        int pos = binarySearch(arr, n, insert);
-
-	        int[] newArr = new int[n + 1];
-
-	        for (int i = 0, j = 0; i < newArr.length; i++) {
-	            if (i == pos) {
-	                newArr[i] = insert;
-	            } else {
-	                newArr[i] = arr[j++];
-	            }
-	        }
-
-	        System.out.print("After insertion: ");
-	        for (int x : newArr) {
-	            System.out.print(x + " ");
-	        }
-
-	        System.out.print("\nDelete an element: ");
-	        int del = sc.nextInt();
-
-	        int delPos = binarySearch(newArr, newArr.length, del);
-
-	        if (delPos >= newArr.length || newArr[delPos] != del) {
-	            System.out.println("Element not found!");
-	        } else {
-	            int[] finalArr = new int[newArr.length - 1];
-
-	            for (int i = 0, j = 0; i < newArr.length; i++) {
-	                if (i != delPos) {
-	                    finalArr[j++] = newArr[i];
-	                }
-	            }
-
-	            System.out.print("After deletion: ");
-	            for (int x : finalArr) {
-	                System.out.print(x + " ");
-	            }
-	        }
-
-	        sc.close();
-	    }
-	}
+public class ActBurlasBinaryTree {
 
 
+    public static int findInsertPos(int[] arr, int size, int key) {
+        int left = 0, right = size - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] < key)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return left;
+    }
+
+
+    public static int search(int[] arr, int size, int key) {
+        int left = 0, right = size - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == key)
+                return mid;
+            else if (arr[mid] < key)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return -1; 
+    }
+
+
+    public static void printArray(int[] arr) {
+        for (int x : arr) {
+            System.out.print(x + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int[] arr = {5, 20, 30, 40, 50};
+        int n = arr.length;
+
+        System.out.print("Array: ");
+        printArray(arr);
+
+
+        System.out.print("Insert an element: ");
+        int insert = sc.nextInt();
+
+        int pos = findInsertPos(arr, n, insert);
+        int[] newArr = new int[n + 1];
+
+        for (int i = 0, j = 0; i < newArr.length; i++) {
+            if (i == pos)
+                newArr[i] = insert;
+            else
+                newArr[i] = arr[j++];
+        }
+
+        System.out.print("After insertion: ");
+        printArray(newArr);
+
+        System.out.print("Delete an element: ");
+        int del = sc.nextInt();
+
+        int delPos = search(newArr, newArr.length, del);
+
+        if (delPos == -1) {
+            System.out.println("Element not found!");
+        } else {
+            int[] finalArr = new int[newArr.length - 1];
+
+            for (int i = 0, j = 0; i < newArr.length; i++) {
+                if (i != delPos) {
+                    finalArr[j++] = newArr[i];
+                }
+            }
+
+            System.out.print("After deletion: ");
+            printArray(finalArr);
+        }
+
+        sc.close();
+    }
+}
